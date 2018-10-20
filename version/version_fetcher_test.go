@@ -24,8 +24,8 @@ var _ = Describe("Version Fetcher", func() {
 		fetcher := &version.Fetcher{
 			HttpClient: httpClient,
 		}
-		versions := make(chan avro.Version)
-		var list []avro.Version
+		versions := make(chan avro.ApplicationVersionAvailable)
+		var list []avro.ApplicationVersionAvailable
 		var wg sync.WaitGroup
 		wg.Add(1)
 		go func() {
@@ -53,8 +53,8 @@ var _ = Describe("Version Fetcher", func() {
 		fetcher := &version.Fetcher{
 			HttpClient: httpClient,
 		}
-		versions := make(chan avro.Version)
-		var list []avro.Version
+		versions := make(chan avro.ApplicationVersionAvailable)
+		var list []avro.ApplicationVersionAvailable
 		var wg sync.WaitGroup
 		wg.Add(1)
 		go func() {
@@ -69,6 +69,6 @@ var _ = Describe("Version Fetcher", func() {
 		wg.Wait()
 		Expect(list).To(HaveLen(1))
 		Expect(list[0].App).To(Equal("Banana"))
-		Expect(list[0].Number).To(Equal("1.3.37"))
+		Expect(list[0].Version).To(Equal("1.3.37"))
 	})
 })

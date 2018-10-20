@@ -24,7 +24,7 @@ type Fetcher struct {
 	HttpClient httpClient
 }
 
-func (v *Fetcher) Fetch(ctx context.Context, versions chan<- avro.Version) error {
+func (v *Fetcher) Fetch(ctx context.Context, versions chan<- avro.ApplicationVersionAvailable) error {
 	url := "https://marketplace.atlassian.com/rest/1.0/applications"
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func (v *Fetcher) Fetch(ctx context.Context, versions chan<- avro.Version) error
 	return nil
 }
 
-func (v *Fetcher) fetchApplication(ctx context.Context, name string, versions chan<- avro.Version) error {
+func (v *Fetcher) fetchApplication(ctx context.Context, name string, versions chan<- avro.ApplicationVersionAvailable) error {
 	url := fmt.Sprintf("https://marketplace.atlassian.com/rest/1.0/applications/%s", name)
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -94,9 +94,9 @@ func (v *Fetcher) fetchApplication(ctx context.Context, name string, versions ch
 		case <-ctx.Done():
 			glog.Infof("context done => return")
 			return nil
-		case versions <- avro.Version{
-			App:    data.Name,
-			Number: version.Version,
+		case versions <- avro.ApplicationVersionAvailable{
+			App:     data.Name,
+			Version: version.Version,
 		}:
 		}
 	}
